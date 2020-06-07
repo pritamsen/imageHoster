@@ -46,6 +46,6 @@ public class CommentController {
     model.addAttribute("comments", comments);
     model.addAttribute("image", image);
 
-    return "images/image";
+    return "redirect:/images/" + imageId + "/new";
   }
 }
