@@ -21,27 +21,31 @@ import java.util.List;
 @Controller
 public class CommentController {
 
-    @Autowired
-    private CommentService commentService;
+  @Autowired private CommentService commentService;
 
-    @Autowired
-    private ImageService imageService;
+  @Autowired private ImageService imageService;
 
-    @RequestMapping(value="/image/{imageId}/{imageTitle}/comments",method = RequestMethod.POST)
-    public String createComment(@PathVariable("imageId")Integer imageId, @RequestParam("comment")String text , Comment comment, HttpSession session, Model model )throws IOException {
-        Image image = imageService.getImage(imageId);
+  @RequestMapping(value = "/image/{imageId}/{imageTitle}/comments", method = RequestMethod.POST)
+  public String createComment(
+      @PathVariable("imageId") Integer imageId,
+      @RequestParam("comment") String text,
+      Comment comment,
+      HttpSession session,
+      Model model)
+      throws IOException {
+    Image image = imageService.getImage(imageId);
 
-        User user=(User)session.getAttribute("loggeduser");
-        comment.setUser(user);
-        comment.setText(text);
-        comment.setImage(image);
-        comment.setCreatedDate(new Date());
-        commentService.updateAComment(comment,imageId);
-        List<Comment> comments=commentService.getListOfCommentsByImageId(imageId);
+    User user = (User) session.getAttribute("loggeduser");
+    comment.setUser(user);
+    comment.setText(text);
+    comment.setImage(image);
+    comment.setCreatedDate(new Date());
+    commentService.updateAComment(comment, imageId);
+    List<Comment> comments = commentService.getListOfCommentsByImageId(imageId);
 
-        model.addAttribute("comments",comments);
-        model.addAttribute("image", image);
+    model.addAttribute("comments", comments);
+    model.addAttribute("image", image);
 
-        return "images/image";
-    }
+    return "images/image";
+  }
 }
