@@ -1,8 +1,10 @@
 package ImageHoster.controller;
 
+import ImageHoster.model.Comment;
 import ImageHoster.model.Image;
 import ImageHoster.model.Tag;
 import ImageHoster.model.User;
+import ImageHoster.service.CommentService;
 import ImageHoster.service.ImageService;
 import ImageHoster.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
-import javax.xml.stream.events.Comment;
 import java.io.IOException;
 import java.util.*;
 
@@ -27,6 +28,10 @@ public class ImageController {
 
     @Autowired
     private TagService tagService;
+
+
+    @Autowired
+    private CommentService commentService;
 
     //This method displays all the images in the user home page after successful login
     @RequestMapping("images")
@@ -51,6 +56,9 @@ public class ImageController {
         Image image = imageService.getImage(imageId);//we retrieve an image by it's imageId rather than by title
         model.addAttribute("image", image);
         model.addAttribute("tags", image.getTags());
+        List<Comment> comments=commentService.getListOfCommentsByImageId(imageId);
+        model.addAttribute("comments",comments);
+
         return "images/image";
     }
 
@@ -101,6 +109,8 @@ public class ImageController {
         model.addAttribute("image", image);
         model.addAttribute("tags", tags);
         model.addAttribute("editError",error);
+        List<Comment> comments=commentService.getListOfCommentsByImageId(imageId);
+        model.addAttribute("comments",comments);
 
         if(!user.getId().equals(image.getUser().getId())) {
             return "images/image";
@@ -141,7 +151,7 @@ public class ImageController {
         updatedImage.setDate(new Date());
 
         imageService.updateImage(updatedImage);
-        return "redirect:/images/" + updatedImage.getTitle();
+        return "images/image" ;
     }
 
 
