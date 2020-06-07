@@ -51,6 +51,13 @@ public class Image {
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Tag> tags = new ArrayList<>();
 
+    //referenced by the 'comments' table
+    //referenced by the 'image_id' field in the 'images' table
+    //cascade = CascadeType.REMOVE removes the corresponding comments for a deleted image
+    //FetchType = LAZY
+    @OneToMany(mappedBy = "image", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<Comment> comments = new ArrayList<>();
+
     public Image() {
     }
 
