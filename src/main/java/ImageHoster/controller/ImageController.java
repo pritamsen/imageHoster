@@ -199,7 +199,7 @@ public class ImageController {
     } else {
 
       imageService.deleteImage(imageId);
-      return "redirect:/images/";
+      return "redirect:/images";
     }
   }
 
