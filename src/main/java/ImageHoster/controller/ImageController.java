@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import javax.xml.stream.events.Comment;
 import java.io.IOException;
 import java.util.*;
 
@@ -45,9 +46,9 @@ public class ImageController {
     //Also now you need to add the tags of an image in the Model type object
     //Here a list of tags is added in the Model type object
     //this list is then sent to 'images/image.html' file and the tags are displayed
-    @RequestMapping("/images/{title}")
-    public String showImage(@PathVariable("title") String title, Model model) {
-        Image image = imageService.getImageByTitle(title);
+    @RequestMapping("/images/{imageId}/{title}")//An image's URL includes its unique identifier imageId
+    public String showImage(@PathVariable("imageId") Integer imageId, Model model) {
+        Image image = imageService.getImage(imageId);//we retrieve an image by it's imageId rather than by title
         model.addAttribute("image", image);
         model.addAttribute("tags", image.getTags());
         return "images/image";
