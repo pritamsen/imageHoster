@@ -30,14 +30,14 @@ public class CommentRepository {
             transaction.rollback();
         }
 
-        List<Comment> comments=getListOFCommentsByImageId(imageId);
+        List<Comment> comments=getListOfCommentsByImageId(imageId);
         comments.add(newComment);
         return comments;
     }
 
     // JPQL query to fetch all the comments
     // list of all the comments fetched
-    public List<Comment> getListOFCommentsByImageId(Integer imageId) {
+    public List<Comment> getListOfCommentsByImageId(Integer imageId) {
         EntityManager em = emf.createEntityManager();
         TypedQuery<Image> typedQuery = em.createQuery("SELECT i from Image i where i.id =:imageId", Image.class).setParameter("imageId", imageId);
         Image image = typedQuery.getSingleResult();
