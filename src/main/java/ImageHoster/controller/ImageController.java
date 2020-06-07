@@ -46,7 +46,7 @@ public class ImageController {
     //Also now you need to add the tags of an image in the Model type object
     //Here a list of tags is added in the Model type object
     //this list is then sent to 'images/image.html' file and the tags are displayed
-    @RequestMapping("/images/{imageId}/{title}")//An image's URL includes its unique identifier imageId
+    @RequestMapping("/images/{imageId}/{title}")// Image URL includes unique identifier imageId
     public String showImage(@PathVariable("imageId") Integer imageId, Model model) {
         Image image = imageService.getImage(imageId);//we retrieve an image by it's imageId rather than by title
         model.addAttribute("image", image);
@@ -102,7 +102,12 @@ public class ImageController {
         model.addAttribute("tags", tags);
         model.addAttribute("editError",error);
 
-        return "images/edit";
+        if(!user.getId().equals(image.getUser().getId())) {
+            return "images/image";
+        }
+        else{
+            return "images/edit";
+        }
     }
 
     //This controller method is called when the request pattern is of type 'images/edit' and also the incoming request is of PUT type
